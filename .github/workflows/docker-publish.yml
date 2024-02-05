@@ -27,7 +27,7 @@ jobs:
       - name: Login to GitHub Container Registry
         env:
           GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
-          GITHUB_USER: $GITHUB_REPOSITORY_OWNER
+          GITHUB_USER: ${{ github.GITHUB_REPOSITORY_OWNER }}
         run: |
           echo $GHCR_TOKEN | docker login ghcr.io -u $GITHUB_USER --password-stdin
 
@@ -42,11 +42,11 @@ jobs:
       - name: Build Docker Image
         env:
           IMAGE_NAME: ${{ vars.IMAGE_NAME }}
-          GHCR_REPO: ghcr.io/${{ GITHUB_REPOSITORY_OWNER }}
+          GHCR_REPO: ghcr.io/${{ github.GITHUB_REPOSITORY_OWNER }}
           DOCKERHUB_REPO: ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.IMAGE_NAME }}
           DATE_TAG: $(date '+%Y%m%d%H%M%S')
         run: |
           cd docker_build
           docker buildx create --use
           docker buildx inspect --bootstrap
-          docker buildx build --platform linux/amd64,linux/arm64 -t $GHCR_REPO/$IMAGE_NAME:$DATE_TAG -t $DOCKERHUB_REPO:$DATE_TAG -t $GHCR_REPO/$IMAGE_NAME:bleeding -t $DOCKERHUB_REPO:bleeding --push .
+          docker buildx build --platform linux/amd64,linux/arm64 -t $GHCR_REPO/$IMAGE_NAME:$DATE_TAG -t $DOCKERHUB_REPO:$DATE_TAG -t $GHCR_REPO/$IMAGE_NAME:bleeding -t $DOCKERHUB_REPO:bleeding --push --cache-to type=gha,mode=max --cache-from type=gha .
