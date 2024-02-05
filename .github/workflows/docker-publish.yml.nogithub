@@ -26,7 +26,7 @@ jobs:
 
       - name: Login to Docker Hub
         env:
-          DOCKERHUB_USERNAME: ${{ DOCKERHUB_USERNAME }}
+          DOCKERHUB_USERNAME: $DOCKERHUB_USERNAME
           DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
         run: |
           echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
@@ -34,7 +34,7 @@ jobs:
 
       - name: Build Docker Image
         env:
-          DOCKERHUB_REPO: ${{ DOCKERHUB_USERNAME }}/${{ IMAGE_NAME }}
+          DOCKERHUB_REPO: $DOCKERHUB_USERNAME/$IMAGE_NAME
           DATE_TAG: $(date '+%Y%m%d%H%M%S')
         run: |
           cd docker_build
