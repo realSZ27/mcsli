@@ -46,7 +46,7 @@ jobs:
           DOCKERHUB_REPO: ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.IMAGE_NAME }}
           DATE_TAG: $(date '+%Y%m%d%H%M%S')
         run: |
-          cd docker_build
+          # cd docker_build
           docker buildx create --use
           docker buildx inspect --bootstrap
-          docker buildx build --platform linux/amd64,linux/arm64 -t $GHCR_REPO/$IMAGE_NAME:$DATE_TAG -t $DOCKERHUB_REPO:$DATE_TAG -t $GHCR_REPO/$IMAGE_NAME:bleeding -t $DOCKERHUB_REPO:bleeding --push --cache-to type=gha,mode=max --cache-from type=gha .
+          docker buildx build --platform linux/amd64,linux/arm64 -t $GHCR_REPO/$IMAGE_NAME:$DATE_TAG -t $DOCKERHUB_REPO:$DATE_TAG -t $GHCR_REPO/$IMAGE_NAME:bleeding -t $DOCKERHUB_REPO:bleeding --push --cache-to type=gha,mode=max --cache-from type=gha ./docker_build
