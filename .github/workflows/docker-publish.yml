@@ -33,7 +33,7 @@ jobs:
 
       - name: Login to Docker Hub
         env:
-          DOCKERHUB_USERNAME: ${{ env.DOCKERHUB_USERNAME }}
+          DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
           DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
         run: |
           echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
@@ -44,7 +44,7 @@ jobs:
         env:
           IMAGE_NAME: $IMAGE_NAME
           GHCR_REPO: ghcr.io/$GITHUB_REPOSITORY_OWNER
-          DOCKERHUB_REPO: ${{ env.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}
+          DOCKERHUB_REPO: ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.IMAGE_NAME }}
           DATE_TAG: $(date '+%Y%m%d%H%M%S')
         run: |
           cd docker_build
