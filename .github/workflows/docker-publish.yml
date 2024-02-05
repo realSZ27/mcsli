@@ -41,8 +41,8 @@ jobs:
 
       - name: Build Docker Image
         env:
-          IMAGE_NAME: $IMAGE_NAME
-          GHCR_REPO: ghcr.io/$GITHUB_REPOSITORY_OWNER
+          IMAGE_NAME: ${{ vars.IMAGE_NAME }}
+          GHCR_REPO: ghcr.io/${{ GITHUB_REPOSITORY_OWNER }}
           DOCKERHUB_REPO: ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.IMAGE_NAME }}
           DATE_TAG: $(date '+%Y%m%d%H%M%S')
         run: |
