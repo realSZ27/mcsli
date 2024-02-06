@@ -1,5 +1,5 @@
 # To make this work on your own repo, see PR #2
-name: Docker Image CI/CD
+name: Docker Image CI
 
 on:
   push:
@@ -49,5 +49,4 @@ jobs:
           cd docker_build
           docker buildx create --use
           docker buildx inspect --bootstrap
-#          docker buildx build --platform linux/amd64,linux/arm64 -t $GHCR_REPO/$IMAGE_NAME:$DATE_TAG -t $DOCKERHUB_REPO:$DATE_TAG -t $GHCR_REPO/$IMAGE_NAME:bleeding -t $DOCKERHUB_REPO:bleeding --push --cache-to type=gha,mode=max --cache-from type=gha .
-          docker buildx build --platform linux/amd64,linux/arm64 -t $DOCKERHUB_REPO:latest --push .
+          docker buildx build --platform linux/amd64,linux/arm64 -t $GHCR_REPO/$IMAGE_NAME:$DATE_TAG -t $DOCKERHUB_REPO:$DATE_TAG -t $GHCR_REPO/$IMAGE_NAME:bleeding -t $DOCKERHUB_REPO:bleeding --push --cache-to type=gha,mode=max --cache-from type=gha .
