@@ -20,36 +20,31 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      -
-        name: Set up QEMU
+      
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
-
+      
       - name: Login to GitHub Container Registry
-        env:
-          GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
-          GITHUB_USER: ${{ github.REPOSITORY_OWNER }}
-        run: |
-          echo $GHCR_TOKEN | docker login ghcr.io -u $GITHUB_USER --password-stdin
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
 
       - name: Login to Docker Hub
-        env:
-          DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
-          DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
-        run: |
-          echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-
-      - name: Build Docker Image
+      - name: Build and push
+        uses: docker/build-push-action@v5
         env:
-          IMAGE_NAME: ${{ vars.IMAGE_NAME }}
           GHCR_REPO: ghcr.io/${{ github.REPOSITORY_OWNER }}
           DOCKERHUB_REPO: ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.IMAGE_NAME }}
           DATE_TAG: $(date '+%Y%m%d%H%M%S')
-        run: |
-          cd docker_build
-          docker buildx create --use
-          docker buildx inspect --bootstrap
-          docker buildx build --platform linux/amd64,linux/arm64 \
-          -t $GHCR_REPO/$IMAGE_NAME:$DATE_TAG -t $DOCKERHUB_REPO:$DATE_TAG -t $GHCR_REPO/$IMAGE_NAME:bleeding -t $DOCKERHUB_REPO:bleeding \
-          --push \
-          --cache-to type=gha,mode=max --cache-from type=gha ./Dockerfile
+        with:
+          context: ./docker_build
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: $GHCR_REPO/${{ vars.IMAGE_NAME }}:$DATE_TAG,$GHCR_REPO/${{ vars.IMAGE_NAME }}:bleeding,$DOCKERHUB_REPO:$DATE_TAG,$DOCKERHUB_REPO:bleeding
