@@ -19,7 +19,6 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-
       
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -47,4 +46,4 @@ jobs:
           context: ./docker_build
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: $GHCR_REPO/${{ vars.IMAGE_NAME }}:$DATE_TAG,$GHCR_REPO/${{ vars.IMAGE_NAME }}:bleeding,$DOCKERHUB_REPO:$DATE_TAG,$DOCKERHUB_REPO:bleeding
+          tags: ${{ env.GHCR_REPO }}/${{ vars.IMAGE_NAME }}:${{ env.DATE_TAG }},${{ env.GHCR_REPO }}/${{ vars.IMAGE_NAME }}:bleeding,${{ env.DOCKERHUB_REPO }}:${{ env.DATE_TAG }},${{ env.DOCKERHUB_REPO }}:bleeding
