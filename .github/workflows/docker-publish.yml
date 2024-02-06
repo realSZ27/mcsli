@@ -46,4 +46,4 @@ jobs:
           context: ./docker_build
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ env.GHCR_REPO }}/${{ vars.IMAGE_NAME }}:${{ env.DATE_TAG }},${{ env.GHCR_REPO }}/${{ vars.IMAGE_NAME }}:bleeding,${{ env.DOCKERHUB_REPO }}:${{ env.DATE_TAG }},${{ env.DOCKERHUB_REPO }}:bleeding
+          tags: ${{ env.GHCR_REPO }}/${{ vars.IMAGE_NAME }}:bleeding,${{ env.DOCKERHUB_REPO }}:bleeding
