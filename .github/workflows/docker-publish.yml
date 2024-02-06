@@ -44,7 +44,6 @@ jobs:
 
       - name: Build and push
         uses: docker/build-push-action@v5
-        run: echo "::set-output name=LOWER_ACTOR::$(echo "${{ github.actor }}" | tr '[:upper:]' '[:lower:]')"
         env:
           GHCR_REPO: ghcr.io/${{ env.OWNER_LC }}
           DOCKERHUB_REPO: ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.IMAGE_NAME }}
