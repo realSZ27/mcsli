@@ -42,7 +42,7 @@ jobs:
         env:
           GHCR_REPO: ghcr.io/${{ env.OWNER_LC }}
           IMAGE_NAME: mcsli
-          VERSION: 1.1.0
+          VERSION: 0.0.1
         with:
           context: ./docker_build
           platforms: linux/amd64,linux/arm64
